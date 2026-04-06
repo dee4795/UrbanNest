@@ -1,0 +1,77 @@
+<div class="page-bg list-bg">
+  <section class="form-wrap">
+    <h2>List Your Home</h2>
+    <p>Add property details so buyers or tenants can contact you.</p>
+
+    <form #f="ngForm" (ngSubmit)="submit(f)">
+      <div class="grid">
+        <label>
+          Purpose
+          <select [(ngModel)]="model.purpose" name="purpose" required>
+            <option value="rent">Rent</option>
+            <option value="buy">Buy</option>
+          </select>
+        </label>
+
+        <label>
+          Property Type
+          <select [(ngModel)]="model.propertyType" name="propertyType" required>
+            <option value="apartment">Apartment / Flat</option>
+            <option value="row-house">Row House</option>
+          </select>
+        </label>
+
+        <label>
+          Title
+          <input [(ngModel)]="model.title" name="title" required />
+        </label>
+
+        <label>
+          Area
+          <input [(ngModel)]="model.area" name="area" required />
+        </label>
+
+        <label>
+          BHK
+          <select [(ngModel)]="model.bhk" name="bhk" required>
+            <option [ngValue]="1">1 BHK</option>
+            <option [ngValue]="2">2 BHK</option>
+            <option [ngValue]="3">3 BHK</option>
+            <option [ngValue]="4">4 BHK</option>
+          </select>
+        </label>
+
+        <label>
+          Price
+          <input [(ngModel)]="model.price" name="price" type="number" required />
+        </label>
+
+        <label>
+          Contact Name
+          <input [(ngModel)]="model.contactName" name="contactName" required />
+        </label>
+
+        <label>
+          Contact Phone
+          <input [(ngModel)]="model.contactPhone" name="contactPhone" required />
+        </label>
+      </div>
+
+      <label class="full">
+        Address
+        <textarea [(ngModel)]="model.address" name="address" rows="3" required></textarea>
+      </label>
+
+      <label class="full">
+        Property Photos
+        <input type="file" accept="image/*" multiple (change)="onImageChange($event)" />
+        <small>{{ imageDataUrls.length }} image(s) selected</small>
+      </label>
+
+      <p class="ok" *ngIf="statusMessage">{{ statusMessage }}</p>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit">Publish Listing</button>
+    </form>
+  </section>
+</div>

@@ -1,0 +1,21 @@
+<header class="topbar">
+  <div class="brand-wrap">
+    <div class="logo">U</div>
+    <div class="brand">
+      <h1>UrbanNest</h1>
+      <p>Pay zero brokerage. Find verified homes.</p>
+    </div>
+  </div>
+
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Search</a>
+    <a routerLink="/list-property" routerLinkActive="active">List Property</a>
+    <a routerLink="/about" routerLinkActive="active">About Us</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
+    <button *ngIf="isLoggedIn" type="button" (click)="logout()">Logout</button>
+  </nav>
+</header>
+
+<main class="page">
+  <router-outlet />
+</main>

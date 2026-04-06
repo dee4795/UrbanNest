@@ -1,0 +1,1987 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+.editorconfig
+.gitignore
+angular.json
+package.json
+public/favicon.ico
+README.md
+src/app/app.component.css
+src/app/app.component.html
+src/app/app.component.spec.ts
+src/app/app.component.ts
+src/app/app.config.ts
+src/app/app.routes.ts
+src/app/guards/auth.guard.ts
+src/app/models/property.model.ts
+src/app/pages/about/about.component.css
+src/app/pages/about/about.component.html
+src/app/pages/about/about.component.ts
+src/app/pages/home-search/home-search.component.css
+src/app/pages/home-search/home-search.component.html
+src/app/pages/home-search/home-search.component.ts
+src/app/pages/list-property/list-property.component.css
+src/app/pages/list-property/list-property.component.html
+src/app/pages/list-property/list-property.component.ts
+src/app/pages/login/login.component.css
+src/app/pages/login/login.component.html
+src/app/pages/login/login.component.ts
+src/app/services/auth.service.ts
+src/app/services/property.service.ts
+src/index.html
+src/main.ts
+src/styles.css
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".editorconfig">
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+quote_type = single
+ij_typescript_use_double_quotes = false
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+</file>
+
+<file path=".gitignore">
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
+</file>
+
+<file path="angular.json">
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "urbannest": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/urbannest",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "urbannest:build:production"
+            },
+            "development": {
+              "buildTarget": "urbannest:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "urbannest",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/compiler": "^19.0.0",
+    "@angular/core": "^19.0.0",
+    "@angular/forms": "^19.0.0",
+    "@angular/platform-browser": "^19.0.0",
+    "@angular/platform-browser-dynamic": "^19.0.0",
+    "@angular/router": "^19.0.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^19.0.2",
+    "@angular/cli": "^19.0.2",
+    "@angular/compiler-cli": "^19.0.0",
+    "@types/jasmine": "~5.1.0",
+    "jasmine-core": "~5.4.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.6.2"
+  }
+}
+</file>
+
+<file path="README.md">
+# UrbanNest
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+
+## Development server
+
+To start a local development server, run:
+
+```bash
+ng serve
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
+```bash
+ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+</file>
+
+<file path="src/app/app.component.css">
+:host {
+  display: block;
+}
+
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #00a76f;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.brand p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+a,
+button {
+  color: #334155;
+  text-decoration: none;
+  border: 1px solid #dbe3ed;
+  border-radius: 8px;
+  padding: 0.48rem 0.8rem;
+  background: #fff;
+  font: inherit;
+  font-weight: 600;
+  transition: all 180ms ease;
+}
+
+a.active {
+  background: #00a76f;
+  border-color: #00a76f;
+  color: #fff;
+}
+
+button {
+  cursor: pointer;
+}
+
+a:hover,
+button:hover {
+  border-color: #00a76f;
+  color: #00a76f;
+}
+
+.page {
+  max-width: 1180px;
+  margin: 1.2rem auto;
+  padding: 0 1rem 1.2rem;
+  animation: fadeIn 420ms ease both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+</file>
+
+<file path="src/app/app.component.html">
+<header class="topbar">
+  <div class="brand-wrap">
+    <div class="logo">U</div>
+    <div class="brand">
+      <h1>UrbanNest</h1>
+      <p>Pay zero brokerage. Find verified homes.</p>
+    </div>
+  </div>
+
+  <nav>
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Search</a>
+    <a routerLink="/list-property" routerLinkActive="active">List Property</a>
+    <a routerLink="/about" routerLinkActive="active">About Us</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
+    <button *ngIf="isLoggedIn" type="button" (click)="logout()">Logout</button>
+  </nav>
+</header>
+
+<main class="page">
+  <router-outlet />
+</main>
+</file>
+
+<file path="src/app/app.component.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [AppComponent],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it('should render title', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('UrbanNest');
+  });
+});
+</file>
+
+<file path="src/app/app.component.ts">
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth.service';
+
+@Component({
+  selector: 'app-root',
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/');
+  }
+}
+</file>
+
+<file path="src/app/app.config.ts">
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
+};
+</file>
+
+<file path="src/app/app.routes.ts">
+import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+import { AboutComponent } from './pages/about/about.component';
+import { HomeSearchComponent } from './pages/home-search/home-search.component';
+import { ListPropertyComponent } from './pages/list-property/list-property.component';
+import { LoginComponent } from './pages/login/login.component';
+
+export const routes: Routes = [
+  { path: '', component: HomeSearchComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'list-property', component: ListPropertyComponent, canActivate: [authGuard] },
+  { path: '**', redirectTo: '' }
+];
+</file>
+
+<file path="src/app/guards/auth.guard.ts">
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+export const authGuard: CanActivateFn = (_, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isLoggedIn) {
+    return true;
+  }
+
+  return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+};
+</file>
+
+<file path="src/app/models/property.model.ts">
+export type ListingPurpose = 'rent' | 'buy';
+export type PropertyType = 'apartment' | 'row-house';
+export type BHKType = 1 | 2 | 3 | 4;
+
+export interface PropertyListing {
+  id: string;
+  ownerEmail: string;
+  purpose: ListingPurpose;
+  propertyType: PropertyType;
+  title: string;
+  area: string;
+  bhk: BHKType;
+  price: number;
+  address: string;
+  contactName: string;
+  contactPhone: string;
+  imageDataUrls: string[];
+  createdAt: string;
+}
+
+export interface PropertyFilters {
+  purpose: 'all' | ListingPurpose;
+  propertyType: 'all' | PropertyType;
+  minBudget?: number;
+  maxBudget?: number;
+  area: string;
+  bhk: 'all' | BHKType;
+}
+</file>
+
+<file path="src/app/pages/about/about.component.css">
+.page-bg {
+  border-radius: 16px;
+  padding: 1rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #d6dbe5;
+}
+
+.about-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.92)),
+    url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1800&q=80');
+}
+
+.about-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.1rem;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.about-card h2 {
+  margin-top: 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.info-grid article {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: #f8fafc;
+}
+
+.info-grid h3,
+.map-wrap h3 {
+  margin-top: 0;
+}
+
+.map-wrap iframe {
+  width: 100%;
+  height: 360px;
+  border: 0;
+  border-radius: 10px;
+}
+</file>
+
+<file path="src/app/pages/about/about.component.html">
+<div class="page-bg about-bg">
+  <section class="about-card">
+    <h2>About UrbanNest</h2>
+    <p>
+      UrbanNest is a property discovery platform focused on helping users find homes for rent or buy
+      without brokerage.
+    </p>
+
+    <div class="info-grid">
+      <article>
+        <h3>Company Address</h3>
+        <p>UrbanNest Technologies Pvt. Ltd.</p>
+        <p>12th Floor, Orion Towers</p>
+        <p>Hitech City, Baner</p>
+        <p>Pune, Maharashtra</p>
+      </article>
+
+      <article>
+        <h3>Contact</h3>
+        <p>Email: support&#64;urbannest.in</p>
+        <p>Phone: +91 98765 43210</p>
+        <p>Working Hours: Mon-Sat, 9:00 AM - 7:00 PM</p>
+      </article>
+    </div>
+
+    <div class="map-wrap">
+      <h3>Find Us on Map</h3>
+      <iframe
+        title="UrbanNest Office Location"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://maps.google.com/maps?q=Baner%20Pune&output=embed"
+      ></iframe>
+    </div>
+  </section>
+</div>
+</file>
+
+<file path="src/app/pages/about/about.component.ts">
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-about',
+  standalone: true,
+  templateUrl: './about.component.html',
+  styleUrl: './about.component.css'
+})
+export class AboutComponent {}
+</file>
+
+<file path="src/app/pages/home-search/home-search.component.css">
+.page-bg {
+  border-radius: 16px;
+  padding: 1rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #d6dbe5;
+}
+
+.search-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.84), rgba(255, 255, 255, 0.9)),
+    url('https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1800&q=80');
+}
+
+.hero {
+  background: linear-gradient(90deg, #e6fff6 0%, #ffffff 70%);
+  border: 1px solid #d4f5e6;
+  border-radius: 14px;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.hero h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #0f172a;
+}
+
+.hero p {
+  margin: 0.35rem 0 0;
+  color: #475569;
+}
+
+.search-box,
+.results {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.search-box h3 {
+  margin: 0 0 0.8rem;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+}
+
+.purpose-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.purpose-switch span {
+  font-weight: 700;
+}
+
+.purpose-switch button {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #dbe3ed;
+}
+
+.purpose-switch button.active {
+  background: #00a76f;
+  color: #fff;
+  border-color: #00a76f;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+input,
+select,
+button {
+  padding: 0.55rem 0.7rem;
+  border-radius: 7px;
+  border: 1px solid #cfd8e3;
+  font: inherit;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+button {
+  background: #00a76f;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 167, 111, 0.24);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button.secondary {
+  background: #fff;
+  color: #334155;
+  border: 1px solid #dbe3ed;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(2, 6, 23, 0.1);
+}
+
+.cover {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.content {
+  padding: 1rem;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pill {
+  background: #ecfdf5;
+  color: #047857;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.meta,
+.contact {
+  color: #52525b;
+}
+
+.price {
+  font-size: 1.1rem;
+  color: #00a76f;
+  font-weight: 700;
+}
+
+.empty {
+  padding: 1rem;
+  color: #71717a;
+}
+
+.page-note {
+  margin: 0 0 0.8rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  min-width: 42px;
+  padding: 0.45rem 0.65rem;
+}
+
+.pagination .active-page {
+  background: #00a76f;
+}
+</file>
+
+<file path="src/app/pages/home-search/home-search.component.html">
+<div class="page-bg search-bg">
+  <section class="hero">
+    <h2>World's Largest No Brokerage Property Site</h2>
+    <p>Search among verified listings across major Indian cities</p>
+  </section>
+
+  <section class="search-box">
+    <h3>Search homes for rent or buy</h3>
+    <div class="purpose-switch">
+      <span>Search For</span>
+      <button type="button" [class.active]="filters.purpose === 'all'" (click)="filters.purpose = 'all'">
+        All
+      </button>
+      <button type="button" [class.active]="filters.purpose === 'rent'" (click)="filters.purpose = 'rent'">
+        Rent
+      </button>
+      <button type="button" [class.active]="filters.purpose === 'buy'" (click)="filters.purpose = 'buy'">
+        Buy
+      </button>
+    </div>
+    <div class="grid">
+      <label>
+        Property Type
+        <select [(ngModel)]="filters.propertyType">
+          <option value="all">All Types</option>
+          <option value="apartment">Apartment / Flat</option>
+          <option value="row-house">Row House</option>
+        </select>
+      </label>
+
+      <label>
+        Area
+        <input [(ngModel)]="filters.area" placeholder="e.g. Indiranagar" />
+      </label>
+
+      <label>
+        BHK
+        <select [(ngModel)]="filters.bhk">
+          <option value="all">All</option>
+          <option [ngValue]="1">1 BHK</option>
+          <option [ngValue]="2">2 BHK</option>
+          <option [ngValue]="3">3 BHK</option>
+          <option [ngValue]="4">4 BHK</option>
+        </select>
+      </label>
+
+      <label>
+        Min Budget
+        <input [(ngModel)]="filters.minBudget" type="number" placeholder="0" />
+      </label>
+
+      <label>
+        Max Budget
+        <input [(ngModel)]="filters.maxBudget" type="number" placeholder="Any" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="applyFilters()">Search Properties</button>
+      <button type="button" class="secondary" (click)="clearFilters()">Clear</button>
+    </div>
+  </section>
+
+  <section class="results">
+    <h3>Available Properties ({{ properties.length }})</h3>
+    <p class="page-note" *ngIf="properties.length">Showing {{ pageSize }} per page</p>
+    <div class="cards" *ngIf="properties.length; else emptyState">
+      <article class="card" *ngFor="let item of pagedProperties">
+        <img
+          class="cover"
+          [src]="item.imageDataUrls[0] || 'https://placehold.co/600x300?text=Property+Photo'"
+          [alt]="item.title"
+        />
+        <div class="content">
+          <div class="top-row">
+            <h4>{{ item.title }}</h4>
+            <span class="pill">{{ item.purpose | titlecase }}</span>
+          </div>
+          <p class="meta">{{ item.bhk }} BHK • {{ item.propertyType === 'row-house' ? 'Row House' : 'Apartment' }} • {{ item.area }}</p>
+          <p>{{ item.address }}</p>
+          <p class="price">{{ item.price | currency: 'INR' : 'symbol' : '1.0-0' }}</p>
+          <p class="contact">Contact: {{ item.contactName }} ({{ item.contactPhone }})</p>
+          <small>Listed {{ item.createdAt | date: 'mediumDate' }}</small>
+        </div>
+      </article>
+    </div>
+
+    <div class="pagination" *ngIf="properties.length > pageSize">
+      <button type="button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+      <button
+        type="button"
+        *ngFor="let page of pages"
+        [class.active-page]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button type="button" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </section>
+</div>
+
+<ng-template #emptyState>
+  <p class="empty">No properties found for selected filters.</p>
+</ng-template>
+</file>
+
+<file path="src/app/pages/home-search/home-search.component.ts">
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { PropertyFilters, PropertyListing } from '../../models/property.model';
+import { PropertyService } from '../../services/property.service';
+
+@Component({
+  selector: 'app-home-search',
+  standalone: true,
+  imports: [CommonModule, FormsModule, CurrencyPipe, DatePipe],
+  templateUrl: './home-search.component.html',
+  styleUrl: './home-search.component.css'
+})
+export class HomeSearchComponent {
+  readonly pageSize = 10;
+  filters: PropertyFilters = {
+    purpose: 'all',
+    propertyType: 'all',
+    minBudget: undefined,
+    maxBudget: undefined,
+    area: '',
+    bhk: 'all'
+  };
+  properties: PropertyListing[] = [];
+  currentPage = 1;
+
+  constructor(private propertyService: PropertyService) {
+    this.properties = this.propertyService.getAll();
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.properties.length / this.pageSize));
+  }
+
+  get pagedProperties(): PropertyListing[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.properties.slice(start, start + this.pageSize);
+  }
+
+  get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  applyFilters(): void {
+    this.properties = this.propertyService.search(this.filters);
+    this.currentPage = 1;
+  }
+
+  clearFilters(): void {
+    this.filters = {
+      purpose: 'all',
+      propertyType: 'all',
+      minBudget: undefined,
+      maxBudget: undefined,
+      area: '',
+      bhk: 'all'
+    };
+    this.properties = this.propertyService.getAll();
+    this.currentPage = 1;
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages) {
+      return;
+    }
+    this.currentPage = page;
+  }
+}
+</file>
+
+<file path="src/app/pages/list-property/list-property.component.css">
+.page-bg {
+  border-radius: 16px;
+  padding: 1rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid #d6dbe5;
+}
+
+.list-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.92)),
+    url('https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?auto=format&fit=crop&w=1800&q=80');
+}
+
+.form-wrap {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.1rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.8rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid #cfd8e3;
+  border-radius: 7px;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+}
+
+button {
+  width: fit-content;
+  background: #00a76f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.96;
+  box-shadow: 0 12px 20px rgba(0, 167, 111, 0.22);
+}
+
+.ok {
+  color: #166534;
+  margin: 0;
+}
+
+.error {
+  color: #b91c1c;
+  margin: 0;
+}
+</file>
+
+<file path="src/app/pages/list-property/list-property.component.html">
+<div class="page-bg list-bg">
+  <section class="form-wrap">
+    <h2>List Your Home</h2>
+    <p>Add property details so buyers or tenants can contact you.</p>
+
+    <form #f="ngForm" (ngSubmit)="submit(f)">
+      <div class="grid">
+        <label>
+          Purpose
+          <select [(ngModel)]="model.purpose" name="purpose" required>
+            <option value="rent">Rent</option>
+            <option value="buy">Buy</option>
+          </select>
+        </label>
+
+        <label>
+          Property Type
+          <select [(ngModel)]="model.propertyType" name="propertyType" required>
+            <option value="apartment">Apartment / Flat</option>
+            <option value="row-house">Row House</option>
+          </select>
+        </label>
+
+        <label>
+          Title
+          <input [(ngModel)]="model.title" name="title" required />
+        </label>
+
+        <label>
+          Area
+          <input [(ngModel)]="model.area" name="area" required />
+        </label>
+
+        <label>
+          BHK
+          <select [(ngModel)]="model.bhk" name="bhk" required>
+            <option [ngValue]="1">1 BHK</option>
+            <option [ngValue]="2">2 BHK</option>
+            <option [ngValue]="3">3 BHK</option>
+            <option [ngValue]="4">4 BHK</option>
+          </select>
+        </label>
+
+        <label>
+          Price
+          <input [(ngModel)]="model.price" name="price" type="number" required />
+        </label>
+
+        <label>
+          Contact Name
+          <input [(ngModel)]="model.contactName" name="contactName" required />
+        </label>
+
+        <label>
+          Contact Phone
+          <input [(ngModel)]="model.contactPhone" name="contactPhone" required />
+        </label>
+      </div>
+
+      <label class="full">
+        Address
+        <textarea [(ngModel)]="model.address" name="address" rows="3" required></textarea>
+      </label>
+
+      <label class="full">
+        Property Photos
+        <input type="file" accept="image/*" multiple (change)="onImageChange($event)" />
+        <small>{{ imageDataUrls.length }} image(s) selected</small>
+      </label>
+
+      <p class="ok" *ngIf="statusMessage">{{ statusMessage }}</p>
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit">Publish Listing</button>
+    </form>
+  </section>
+</div>
+</file>
+
+<file path="src/app/pages/list-property/list-property.component.ts">
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { BHKType, ListingPurpose, PropertyType } from '../../models/property.model';
+import { AuthService } from '../../services/auth.service';
+import { PropertyService } from '../../services/property.service';
+
+@Component({
+  selector: 'app-list-property',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './list-property.component.html',
+  styleUrl: './list-property.component.css'
+})
+export class ListPropertyComponent {
+  model: {
+    purpose: ListingPurpose;
+    propertyType: PropertyType;
+    title: string;
+    area: string;
+    bhk: BHKType;
+    price: number | null;
+    address: string;
+    contactName: string;
+    contactPhone: string;
+  } = {
+    purpose: 'rent',
+    propertyType: 'apartment',
+    title: '',
+    area: '',
+    bhk: 1,
+    price: null,
+    address: '',
+    contactName: '',
+    contactPhone: ''
+  };
+
+  imageDataUrls: string[] = [];
+  statusMessage = '';
+  errorMessage = '';
+
+  constructor(
+    private authService: AuthService,
+    private propertyService: PropertyService,
+    private router: Router
+  ) {}
+
+  async onImageChange(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const files = input.files ? Array.from(input.files) : [];
+    this.imageDataUrls = await Promise.all(files.map((file) => this.toDataUrl(file)));
+  }
+
+  submit(form: NgForm): void {
+    this.statusMessage = '';
+    this.errorMessage = '';
+    if (!form.valid || this.model.price === null) {
+      this.errorMessage = 'Please fill all required fields correctly.';
+      return;
+    }
+
+    const ownerEmail = this.authService.currentUserEmail;
+    if (!ownerEmail) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
+    this.propertyService.add({
+      ownerEmail,
+      purpose: this.model.purpose,
+      propertyType: this.model.propertyType,
+      title: this.model.title,
+      area: this.model.area,
+      bhk: this.model.bhk,
+      price: this.model.price,
+      address: this.model.address,
+      contactName: this.model.contactName,
+      contactPhone: this.model.contactPhone,
+      imageDataUrls: this.imageDataUrls
+    });
+
+    form.resetForm({
+      purpose: 'rent',
+      propertyType: 'apartment',
+      bhk: 1
+    });
+    this.imageDataUrls = [];
+    this.statusMessage = 'Property listed successfully. It is now visible in search results.';
+  }
+
+  private toDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error('Failed to read image'));
+      reader.readAsDataURL(file);
+    });
+  }
+}
+</file>
+
+<file path="src/app/pages/login/login.component.css">
+/* 1. THE RESET - Crucial for Full Screen */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevents awkward side-scrolling */
+}
+
+/* 2. THE CONTAINER */
+.page-bg {
+  /* This forces the div to be at least as tall as the screen */
+  min-height: 100vh;
+  width: 100%;
+  
+  /* Flexbox centers the card perfectly in the middle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Modern Background Handling */
+  background-size: cover;      /* Scales image to fill every pixel */
+  background-position: center; /* Keeps the subject centered */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Parallax effect: image stays still while scrolling */
+}
+
+.login-bg {
+  /* Darkened overlay to make the white card pop */
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+    url('https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1800&q=80');
+}
+
+/* 3. THE CARD */
+.auth-card {
+  width: 90%;
+  max-width: 400px;
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  /* Animation for a "stylish" entrance */
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 4. TYPOGRAPHY & INPUTS (High Visibility) */
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding doesn't break the width */
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #1e293b;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* 5. THE LOGIN BUTTON */
+.submit {
+  width: 100%;
+  background: #252527;
+  color: #ffffff !important;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+}
+
+.submit:hover {
+  background: #a09bf2;
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+}
+
+.mode-switch {
+  display: flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.mode-switch button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.mode-switch button.active {
+  background: #ffffff;
+  color: #6366f1;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+</file>
+
+<file path="src/app/pages/login/login.component.html">
+<div class="page-bg login-bg">
+  <section class="auth-card">
+    <h2>{{ mode === 'login' ? 'Login to UrbanNest' : 'Create your UrbanNest account' }}</h2>
+    <p>Login is required before listing your property.</p>
+
+    <div class="mode-switch">
+      <button [class.active]="mode === 'login'" (click)="mode = 'login'">Login</button>
+      <button [class.active]="mode === 'register'" (click)="mode = 'register'">Register</button>
+    </div>
+
+    <form (ngSubmit)="submit()">
+      <label *ngIf="mode === 'register'">
+        Full Name
+        <input [(ngModel)]="name" name="name" required />
+      </label>
+
+      <label>
+        Email
+        <input [(ngModel)]="email" name="email" type="email" required />
+      </label>
+
+      <label>
+        Password
+        <input [(ngModel)]="password" name="password" type="password" required />
+      </label>
+
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit" class="submit">
+        {{ mode === 'login' ? 'Login' : 'Create Account' }}
+      </button>
+    </form>
+  </section>
+</div>
+</file>
+
+<file path="src/app/pages/login/login.component.ts">
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
+})
+export class LoginComponent {
+  mode: 'login' | 'register' = 'login';
+  name = '';
+  email = '';
+  password = '';
+  errorMessage = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
+
+  submit(): void {
+    this.errorMessage = '';
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
+
+    if (this.mode === 'register') {
+      const result = this.authService.register(this.name, this.email, this.password);
+      if (!result.ok) {
+        this.errorMessage = result.message ?? 'Unable to register.';
+        return;
+      }
+      this.router.navigateByUrl(returnUrl);
+      return;
+    }
+
+    const result = this.authService.login(this.email, this.password);
+    if (!result.ok) {
+      this.errorMessage = result.message ?? 'Unable to login.';
+      return;
+    }
+
+    this.router.navigateByUrl(returnUrl);
+  }
+}
+</file>
+
+<file path="src/app/services/auth.service.ts">
+import { Injectable } from '@angular/core';
+
+interface UserAccount {
+  email: string;
+  password: string;
+  name: string;
+}
+
+const USERS_KEY = 'homefinder_users';
+const CURRENT_USER_KEY = 'homefinder_current_user';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private users: UserAccount[] = this.readUsers();
+
+  get currentUserEmail(): string | null {
+    return localStorage.getItem(CURRENT_USER_KEY);
+  }
+
+  get isLoggedIn(): boolean {
+    return !!this.currentUserEmail;
+  }
+
+  register(name: string, email: string, password: string): { ok: boolean; message?: string } {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (this.users.some((u) => u.email === normalizedEmail)) {
+      return { ok: false, message: 'An account with this email already exists.' };
+    }
+
+    this.users.push({ name: name.trim(), email: normalizedEmail, password });
+    this.writeUsers(this.users);
+    localStorage.setItem(CURRENT_USER_KEY, normalizedEmail);
+    return { ok: true };
+  }
+
+  login(email: string, password: string): { ok: boolean; message?: string } {
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = this.users.find((u) => u.email === normalizedEmail);
+    if (!user || user.password !== password) {
+      return { ok: false, message: 'Invalid email or password.' };
+    }
+
+    localStorage.setItem(CURRENT_USER_KEY, normalizedEmail);
+    return { ok: true };
+  }
+
+  logout(): void {
+    localStorage.removeItem(CURRENT_USER_KEY);
+  }
+
+  private readUsers(): UserAccount[] {
+    const raw = localStorage.getItem(USERS_KEY);
+    if (!raw) {
+      return [];
+    }
+
+    try {
+      const parsed = JSON.parse(raw) as UserAccount[];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private writeUsers(users: UserAccount[]): void {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+}
+</file>
+
+<file path="src/app/services/property.service.ts">
+import { Injectable } from '@angular/core';
+import { PropertyFilters, PropertyListing } from '../models/property.model';
+
+const PROPERTIES_KEY = 'homefinder_properties';
+const DEMO_TARGET_COUNT = 100;
+
+@Injectable({ providedIn: 'root' })
+export class PropertyService {
+  private properties: PropertyListing[] = this.loadProperties();
+
+  getAll(): PropertyListing[] {
+    return [...this.properties].sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  }
+
+  search(filters: PropertyFilters): PropertyListing[] {
+    return this.getAll().filter((property) => {
+      const byPurpose = filters.purpose === 'all' || property.purpose === filters.purpose;
+      const propertyType = property.propertyType ?? 'apartment';
+      const byType = filters.propertyType === 'all' || propertyType === filters.propertyType;
+      const byArea = !filters.area || property.area.toLowerCase().includes(filters.area.toLowerCase().trim());
+      const byBhk = filters.bhk === 'all' || property.bhk === filters.bhk;
+      const byMin = filters.minBudget === undefined || property.price >= filters.minBudget;
+      const byMax = filters.maxBudget === undefined || property.price <= filters.maxBudget;
+
+      return byPurpose && byType && byArea && byBhk && byMin && byMax;
+    });
+  }
+
+  add(listing: Omit<PropertyListing, 'id' | 'createdAt'>): PropertyListing {
+    const newItem: PropertyListing = {
+      ...listing,
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString()
+    };
+
+    this.properties.push(newItem);
+    this.saveProperties();
+    return newItem;
+  }
+
+  private loadProperties(): PropertyListing[] {
+    const raw = localStorage.getItem(PROPERTIES_KEY);
+    if (!raw) {
+      const seeded = this.seedListings();
+      localStorage.setItem(PROPERTIES_KEY, JSON.stringify(seeded));
+      return seeded;
+    }
+
+    try {
+      const parsed = JSON.parse(raw) as PropertyListing[];
+      if (!Array.isArray(parsed)) {
+        return [];
+      }
+
+      const normalized = parsed.map((item) => ({
+        ...item,
+        propertyType: item.propertyType ?? 'apartment'
+      }));
+      const merged = this.ensureDemoListings(normalized);
+      const mergedRaw = JSON.stringify(merged);
+      if (mergedRaw !== raw) {
+        localStorage.setItem(PROPERTIES_KEY, mergedRaw);
+      }
+      return merged;
+    } catch {
+      return [];
+    }
+  }
+
+  private saveProperties(): void {
+    localStorage.setItem(PROPERTIES_KEY, JSON.stringify(this.properties));
+  }
+
+  private seedListings(): PropertyListing[] {
+    return this.createDemoListings();
+  }
+
+  private ensureDemoListings(existing: PropertyListing[]): PropertyListing[] {
+    const userListings = existing.filter((item) => !item.id.startsWith('demo-'));
+    if (userListings.length >= DEMO_TARGET_COUNT) {
+      return existing;
+    }
+
+    return [...userListings, ...this.createDemoListings()];
+  }
+
+  private createDemoListings(): PropertyListing[] {
+    const cityLocalities: Array<{ city: string; locality: string }> = [
+      { city: 'Mumbai', locality: 'Andheri' },
+      { city: 'Delhi', locality: 'Dwarka' },
+      { city: 'Bengaluru', locality: 'Whitefield' },
+      { city: 'Hyderabad', locality: 'Gachibowli' },
+      { city: 'Chennai', locality: 'Velachery' },
+      { city: 'Pune', locality: 'Kothrud' },
+      { city: 'Kolkata', locality: 'Salt Lake' },
+      { city: 'Ahmedabad', locality: 'Prahlad Nagar' },
+      { city: 'Jaipur', locality: 'Malviya Nagar' },
+      { city: 'Lucknow', locality: 'Gomti Nagar' },
+      { city: 'Chandigarh', locality: 'Sector 35' },
+      { city: 'Kochi', locality: 'Kakkanad' },
+      { city: 'Indore', locality: 'Vijay Nagar' },
+      { city: 'Surat', locality: 'Vesu' },
+      { city: 'Noida', locality: 'Sector 62' }
+    ];
+    const titles = [
+      'Modern Flat with Balcony',
+      'Sunlit Family Apartment',
+      'Premium High-Rise Home',
+      'Cozy Apartment Near Metro',
+      'Spacious House with Parking',
+      'Newly Renovated Flat',
+      'Calm Residential Tower Flat',
+      'Bright Home in Prime Area'
+    ];
+    const firstNames = [
+      'Aarav',
+      'Ishaan',
+      'Vihaan',
+      'Aditya',
+      'Riya',
+      'Ananya',
+      'Kavya',
+      'Meera',
+      'Nikhil',
+      'Saanvi',
+      'Arjun',
+      'Rohan',
+      'Pooja',
+      'Sneha',
+      'Rahul',
+      'Diya'
+    ];
+    const lastNames = [
+      'Sharma',
+      'Verma',
+      'Nair',
+      'Iyer',
+      'Gupta',
+      'Patel',
+      'Singh',
+      'Reddy',
+      'Mehta',
+      'Joshi',
+      'Kapoor',
+      'Kulkarni',
+      'Bose',
+      'Choudhary',
+      'Malhotra',
+      'Das'
+    ];
+    const photos = [
+      'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1560185007-5f0bb1866cab?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1605146769289-440113cc3d00?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1572120360610-d971b9d7767c?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1472224371017-08207f84aaae?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1464890100898-a385f744067f?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1599423300746-b62533397364?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1630699144867-37acec97df5a?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb3?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600563438938-a9a27216b93d?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80'
+    ];
+
+    return Array.from({ length: DEMO_TARGET_COUNT }, (_, index) => {
+      const purpose = index % 2 === 0 ? 'rent' : 'buy';
+      const location = cityLocalities[index % cityLocalities.length];
+      const area = `${location.locality}, ${location.city}`;
+      const title = titles[index % titles.length];
+      const bhk = ((index % 4) + 1) as 1 | 2 | 3 | 4;
+      const propertyType = index % 5 === 0 ? 'row-house' : 'apartment';
+      const baseRent = 14000 + (index % 12) * 1500;
+      const baseBuy = 4200000 + (index % 20) * 250000;
+      const bhkPremium = (bhk - 1) * (purpose === 'rent' ? 3500 : 500000);
+      const typePremium = propertyType === 'row-house' ? (purpose === 'rent' ? 8000 : 1200000) : 0;
+      const price = (purpose === 'rent' ? baseRent : baseBuy) + bhkPremium + typePremium;
+      const firstName = firstNames[index % firstNames.length];
+      const lastName = lastNames[(index * 3) % lastNames.length];
+      const phone = `98${(76543210 + index).toString().slice(-8)}`;
+      const firstPhoto = photos[(index * 7) % photos.length];
+      const secondPhoto = photos[(index * 11 + 5) % photos.length];
+      const createdAt = new Date(Date.now() - index * 3600 * 1000 * 6).toISOString();
+
+      return {
+        id: `demo-${index + 1}`,
+        ownerEmail: 'owner@demo.com',
+        purpose,
+        propertyType,
+        title: propertyType === 'row-house' ? `${bhk}BHK ${title} Row House` : `${bhk}BHK ${title}`,
+        area,
+        bhk,
+        price,
+        address: `${10 + (index % 80)}, ${location.locality} Main Road, ${location.city}`,
+        contactName: `${firstName} ${lastName}`,
+        contactPhone: phone,
+        imageDataUrls: [firstPhoto, secondPhoto],
+        createdAt
+      };
+    });
+  }
+}
+</file>
+
+<file path="src/index.html">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UrbanNest</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+</file>
+
+<file path="src/main.ts">
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));
+</file>
+
+<file path="src/styles.css">
+/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
+  color: #0f172a;
+  min-height: 100vh;
+}
+</file>
+
+<file path="tsconfig.app.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
+</file>
+
+<file path="tsconfig.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}
+</file>
+
+<file path="tsconfig.spec.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jasmine"
+    ]
+  },
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ]
+}
+</file>
+
+</files>

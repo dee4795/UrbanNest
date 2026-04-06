@@ -1,0 +1,107 @@
+<div class="page-bg search-bg">
+  <section class="hero">
+    <h2>World's Largest No Brokerage Property Site</h2>
+    <p>Search among verified listings across major Indian cities</p>
+  </section>
+
+  <section class="search-box">
+    <h3>Search homes for rent or buy</h3>
+    <div class="purpose-switch">
+      <span>Search For</span>
+      <button type="button" [class.active]="filters.purpose === 'all'" (click)="filters.purpose = 'all'">
+        All
+      </button>
+      <button type="button" [class.active]="filters.purpose === 'rent'" (click)="filters.purpose = 'rent'">
+        Rent
+      </button>
+      <button type="button" [class.active]="filters.purpose === 'buy'" (click)="filters.purpose = 'buy'">
+        Buy
+      </button>
+    </div>
+    <div class="grid">
+      <label>
+        Property Type
+        <select [(ngModel)]="filters.propertyType">
+          <option value="all">All Types</option>
+          <option value="apartment">Apartment / Flat</option>
+          <option value="row-house">Row House</option>
+        </select>
+      </label>
+
+      <label>
+        Area
+        <input [(ngModel)]="filters.area" placeholder="e.g. Indiranagar" />
+      </label>
+
+      <label>
+        BHK
+        <select [(ngModel)]="filters.bhk">
+          <option value="all">All</option>
+          <option [ngValue]="1">1 BHK</option>
+          <option [ngValue]="2">2 BHK</option>
+          <option [ngValue]="3">3 BHK</option>
+          <option [ngValue]="4">4 BHK</option>
+        </select>
+      </label>
+
+      <label>
+        Min Budget
+        <input [(ngModel)]="filters.minBudget" type="number" placeholder="0" />
+      </label>
+
+      <label>
+        Max Budget
+        <input [(ngModel)]="filters.maxBudget" type="number" placeholder="Any" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="applyFilters()">Search Properties</button>
+      <button type="button" class="secondary" (click)="clearFilters()">Clear</button>
+    </div>
+  </section>
+
+  <section class="results">
+    <h3>Available Properties ({{ properties.length }})</h3>
+    <p class="page-note" *ngIf="properties.length">Showing {{ pageSize }} per page</p>
+    <div class="cards" *ngIf="properties.length; else emptyState">
+      <article class="card" *ngFor="let item of pagedProperties">
+        <img
+          class="cover"
+          [src]="item.imageDataUrls[0] || 'https://placehold.co/600x300?text=Property+Photo'"
+          [alt]="item.title"
+        />
+        <div class="content">
+          <div class="top-row">
+            <h4>{{ item.title }}</h4>
+            <span class="pill">{{ item.purpose | titlecase }}</span>
+          </div>
+          <p class="meta">{{ item.bhk }} BHK • {{ item.propertyType === 'row-house' ? 'Row House' : 'Apartment' }} • {{ item.area }}</p>
+          <p>{{ item.address }}</p>
+          <p class="price">{{ item.price | currency: 'INR' : 'symbol' : '1.0-0' }}</p>
+          <p class="contact">Contact: {{ item.contactName }} ({{ item.contactPhone }})</p>
+          <small>Listed {{ item.createdAt | date: 'mediumDate' }}</small>
+        </div>
+      </article>
+    </div>
+
+    <div class="pagination" *ngIf="properties.length > pageSize">
+      <button type="button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+      <button
+        type="button"
+        *ngFor="let page of pages"
+        [class.active-page]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button type="button" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+  </section>
+</div>
+
+<ng-template #emptyState>
+  <p class="empty">No properties found for selected filters.</p>
+</ng-template>
