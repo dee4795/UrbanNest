@@ -1,17 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, map, of } from 'rxjs';
 
-interface UserAccount {
-  email: string;
-  password: string;
-  name: string;
-}
-
-const USERS_KEY = 'homefinder_users';
-const CURRENT_USER_KEY = 'homefinder_current_user';
+const CURRENT_USER_KEY = 'urbannest_current_user';
+const TOKEN_KEY = 'urbannest_token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private users: UserAccount[] = this.readUsers();
+  constructor(private http: HttpClient) {}
 
   get currentUserEmail(): string | null {
     return localStorage.getItem(CURRENT_USER_KEY);
@@ -21,48 +17,38 @@ export class AuthService {
     return !!this.currentUserEmail;
   }
 
-  register(name: string, email: string, password: string): { ok: boolean; message?: string } {
-    const normalizedEmail = email.trim().toLowerCase();
-    if (this.users.some((u) => u.email === normalizedEmail)) {
-      return { ok: false, message: 'An account with this email already exists.' };
-    }
-
-    this.users.push({ name: name.trim(), email: normalizedEmail, password });
-    this.writeUsers(this.users);
-    localStorage.setItem(CURRENT_USER_KEY, normalizedEmail);
-    return { ok: true };
+  register(
+    name: string,
+    email: string,
+    password: string
+  ): import('rxjs').Observable<{ ok: boolean; message?: string }> {
+    return this.http
+      .post<{ token: string; email: string }>('/api/auth/register', { name, email, password })
+      .pipe(
+        map((res) => {
+          localStorage.setItem(TOKEN_KEY, res.token);
+          localStorage.setItem(CURRENT_USER_KEY, res.email);
+          return { ok: true } as const;
+        }),
+        catchError((err) =>
+          of({ ok: false, message: err?.error?.message ?? 'Unable to register.' } as const)
+        )
+      );
   }
 
-  login(email: string, password: string): { ok: boolean; message?: string } {
-    const normalizedEmail = email.trim().toLowerCase();
-    const user = this.users.find((u) => u.email === normalizedEmail);
-    if (!user || user.password !== password) {
-      return { ok: false, message: 'Invalid email or password.' };
-    }
-
-    localStorage.setItem(CURRENT_USER_KEY, normalizedEmail);
-    return { ok: true };
+  login(email: string, password: string): import('rxjs').Observable<{ ok: boolean; message?: string }> {
+    return this.http.post<{ token: string; email: string }>('/api/auth/login', { email, password }).pipe(
+      map((res) => {
+        localStorage.setItem(TOKEN_KEY, res.token);
+        localStorage.setItem(CURRENT_USER_KEY, res.email);
+        return { ok: true } as const;
+      }),
+      catchError((err) => of({ ok: false, message: err?.error?.message ?? 'Unable to login.' } as const))
+    );
   }
 
   logout(): void {
     localStorage.removeItem(CURRENT_USER_KEY);
-  }
-
-  private readUsers(): UserAccount[] {
-    const raw = localStorage.getItem(USERS_KEY);
-    if (!raw) {
-      return [];
-    }
-
-    try {
-      const parsed = JSON.parse(raw) as UserAccount[];
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-
-  private writeUsers(users: UserAccount[]): void {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    localStorage.removeItem(TOKEN_KEY);
   }
 }

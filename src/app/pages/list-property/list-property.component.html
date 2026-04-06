@@ -47,6 +47,43 @@
         </label>
 
         <label>
+          Parking
+          <select [(ngModel)]="model.parking" name="parking">
+            <option value="">Select parking</option>
+            <option value="Covered Parking">Covered Parking</option>
+            <option value="Open Parking">Open Parking</option>
+            <option value="No Parking">No Parking</option>
+            <option value="Basement Parking">Basement Parking</option>
+            <option value="Reserved Parking">Reserved Parking</option>
+          </select>
+        </label>
+
+        <label>
+          Carpet Area (sqft)
+          <input [(ngModel)]="model.carpetAreaSqft" name="carpetAreaSqft" type="number" />
+        </label>
+
+        <label>
+          Built-up Area (sqft)
+          <input [(ngModel)]="model.builtUpAreaSqft" name="builtUpAreaSqft" type="number" />
+        </label>
+
+        <label>
+          Property Age (years)
+          <input [(ngModel)]="model.propertyAge" name="propertyAge" type="number" />
+        </label>
+
+        <label>
+          Builder
+          <input [(ngModel)]="model.builderName" name="builderName" />
+        </label>
+
+        <label>
+          Amenities
+          <input [(ngModel)]="model.amenitiesText" name="amenitiesText" placeholder="Comma-separated amenities" />
+        </label>
+
+        <label>
           Contact Name
           <input [(ngModel)]="model.contactName" name="contactName" required />
         </label>
@@ -71,7 +108,9 @@
       <p class="ok" *ngIf="statusMessage">{{ statusMessage }}</p>
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-      <button type="submit">Publish Listing</button>
+      <button type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Publishing...' : 'Publish Listing' }}
+      </button>
     </form>
   </section>
 </div>

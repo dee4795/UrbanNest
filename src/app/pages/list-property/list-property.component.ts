@@ -22,8 +22,14 @@ export class ListPropertyComponent {
     bhk: BHKType;
     price: number | null;
     address: string;
+    parking: string;
+    carpetAreaSqft: number | null;
+    builtUpAreaSqft: number | null;
+    propertyAge: number | null;
+    builderName: string;
     contactName: string;
     contactPhone: string;
+    amenitiesText: string;
   } = {
     purpose: 'rent',
     propertyType: 'apartment',
@@ -32,13 +38,20 @@ export class ListPropertyComponent {
     bhk: 1,
     price: null,
     address: '',
+    parking: '',
+    carpetAreaSqft: null,
+    builtUpAreaSqft: null,
+    propertyAge: null,
+    builderName: '',
     contactName: '',
-    contactPhone: ''
+    contactPhone: '',
+    amenitiesText: ''
   };
 
   imageDataUrls: string[] = [];
   statusMessage = '';
   errorMessage = '';
+  isSubmitting = false;
 
   constructor(
     private authService: AuthService,
@@ -66,27 +79,50 @@ export class ListPropertyComponent {
       return;
     }
 
-    this.propertyService.add({
-      ownerEmail,
-      purpose: this.model.purpose,
-      propertyType: this.model.propertyType,
-      title: this.model.title,
-      area: this.model.area,
-      bhk: this.model.bhk,
-      price: this.model.price,
-      address: this.model.address,
-      contactName: this.model.contactName,
-      contactPhone: this.model.contactPhone,
-      imageDataUrls: this.imageDataUrls
-    });
-
-    form.resetForm({
-      purpose: 'rent',
-      propertyType: 'apartment',
-      bhk: 1
-    });
-    this.imageDataUrls = [];
-    this.statusMessage = 'Property listed successfully. It is now visible in search results.';
+    this.isSubmitting = true;
+    this.propertyService
+      .add({
+        ownerEmail,
+        purpose: this.model.purpose,
+        propertyType: this.model.propertyType,
+        title: this.model.title,
+        area: this.model.area,
+        bhk: this.model.bhk,
+        price: this.model.price,
+        address: this.model.address,
+        parking: this.model.parking || undefined,
+        carpetAreaSqft: this.model.carpetAreaSqft ?? undefined,
+        builtUpAreaSqft: this.model.builtUpAreaSqft ?? undefined,
+        propertyAge: this.model.propertyAge ?? undefined,
+        builderName: this.model.builderName || undefined,
+        amenities: this.model.amenitiesText
+          ? this.model.amenitiesText
+              .split(',')
+              .map((text) => text.trim())
+              .filter(Boolean)
+          : undefined,
+        contactName: this.model.contactName,
+        contactPhone: this.model.contactPhone,
+        imageDataUrls: this.imageDataUrls
+      })
+      .subscribe({
+        next: () => {
+          form.resetForm({
+            purpose: 'rent',
+            propertyType: 'apartment',
+            bhk: 1
+          });
+          this.imageDataUrls = [];
+          this.statusMessage = 'Property listed successfully. It is now visible in search results.';
+        },
+        error: (err) => {
+          this.errorMessage = err?.error?.message ?? 'Unable to list property.';
+          this.isSubmitting = false;
+        },
+        complete: () => {
+          this.isSubmitting = false;
+        }
+      });
   }
 
   private toDataUrl(file: File): Promise<string> {

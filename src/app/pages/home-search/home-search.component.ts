@@ -23,9 +23,11 @@ export class HomeSearchComponent {
   };
   properties: PropertyListing[] = [];
   currentPage = 1;
+  isLoading = false;
+  selectedListing: PropertyListing | null = null;
 
   constructor(private propertyService: PropertyService) {
-    this.properties = this.propertyService.getAll();
+    this.reloadAll();
   }
 
   get totalPages(): number {
@@ -42,8 +44,20 @@ export class HomeSearchComponent {
   }
 
   applyFilters(): void {
-    this.properties = this.propertyService.search(this.filters);
-    this.currentPage = 1;
+    this.isLoading = true;
+    this.propertyService.search(this.filters).subscribe({
+      next: (items) => {
+        this.properties = items;
+        this.currentPage = 1;
+      },
+      error: () => {
+        this.properties = [];
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 
   clearFilters(): void {
@@ -55,8 +69,7 @@ export class HomeSearchComponent {
       area: '',
       bhk: 'all'
     };
-    this.properties = this.propertyService.getAll();
-    this.currentPage = 1;
+    this.reloadAll();
   }
 
   goToPage(page: number): void {
@@ -64,5 +77,30 @@ export class HomeSearchComponent {
       return;
     }
     this.currentPage = page;
+  }
+
+  openDetails(item: PropertyListing): void {
+    this.selectedListing = item;
+  }
+
+  closeDetails(): void {
+    this.selectedListing = null;
+  }
+
+  private reloadAll(): void {
+    this.isLoading = true;
+    this.propertyService.getAll().subscribe({
+      next: (items) => {
+        this.properties = items;
+        this.currentPage = 1;
+      },
+      error: () => {
+        this.properties = [];
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
   }
 }

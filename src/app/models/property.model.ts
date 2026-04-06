@@ -15,6 +15,12 @@ export interface PropertyListing {
   contactName: string;
   contactPhone: string;
   imageDataUrls: string[];
+  parking?: string | null;
+  carpetAreaSqft?: number | null;
+  builtUpAreaSqft?: number | null;
+  amenities?: string[];
+  propertyAge?: number | null;
+  builderName?: string | null;
   createdAt: string;
 }
 

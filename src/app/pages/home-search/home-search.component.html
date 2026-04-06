@@ -65,7 +65,7 @@
     <h3>Available Properties ({{ properties.length }})</h3>
     <p class="page-note" *ngIf="properties.length">Showing {{ pageSize }} per page</p>
     <div class="cards" *ngIf="properties.length; else emptyState">
-      <article class="card" *ngFor="let item of pagedProperties">
+      <article class="card" *ngFor="let item of pagedProperties" (click)="openDetails(item)">
         <img
           class="cover"
           [src]="item.imageDataUrls[0] || 'https://placehold.co/600x300?text=Property+Photo'"
@@ -101,6 +101,28 @@
     </div>
   </section>
 </div>
+
+<section class="details-overlay" *ngIf="selectedListing" (click)="closeDetails()">
+  <article class="details-card" (click)="$event.stopPropagation()">
+    <button class="close-btn" type="button" (click)="closeDetails()">Close</button>
+    <img
+      class="details-cover"
+      [src]="selectedListing.imageDataUrls[0] || 'https://placehold.co/900x450?text=Property+Photo'"
+      [alt]="selectedListing.title"
+    />
+    <h3>{{ selectedListing.title }}</h3>
+    <p class="meta">{{ selectedListing.bhk }} BHK • {{ selectedListing.area }}</p>
+    <p class="price">{{ selectedListing.price | currency: 'INR' : 'symbol' : '1.0-0' }}</p>
+    <p><strong>Address:</strong> {{ selectedListing.address }}</p>
+    <p><strong>Parking:</strong> {{ selectedListing.parking || 'Not specified' }}</p>
+    <p><strong>Carpet Area:</strong> {{ selectedListing.carpetAreaSqft || 'N/A' }} sqft</p>
+    <p><strong>Built-up Area:</strong> {{ selectedListing.builtUpAreaSqft || 'N/A' }} sqft</p>
+    <p><strong>Property Age:</strong> {{ selectedListing.propertyAge ?? 'N/A' }} years</p>
+    <p><strong>Builder:</strong> {{ selectedListing.builderName || 'Not specified' }}</p>
+    <p><strong>Amenities:</strong> {{ (selectedListing.amenities?.length ? selectedListing.amenities?.join(', ') : 'Not specified') }}</p>
+    <p><strong>Contact:</strong> {{ selectedListing.contactName }} ({{ selectedListing.contactPhone }})</p>
+  </article>
+</section>
 
 <ng-template #emptyState>
   <p class="empty">No properties found for selected filters.</p>

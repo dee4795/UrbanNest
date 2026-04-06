@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: urbannest-postgres
+    environment:
+      POSTGRES_DB: urbannest
+      POSTGRES_USER: urbannest
+      POSTGRES_PASSWORD: urbannest
+    ports:
+      - "5432:5432"
+    volumes:
+      - urbannest_pgdata:/var/lib/postgresql/data
+
+volumes:
+  urbannest_pgdata:

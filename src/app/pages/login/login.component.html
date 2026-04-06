@@ -1,4 +1,19 @@
 <div class="page-bg login-bg">
+  <video
+    class="bg-video"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    poster="https://images.unsplash.com/photo-1460317442991-0ec209397118?auto=format&fit=crop&w=1800&q=80"
+  >
+    <source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-city-buildings-1579/1080p.mp4" type="video/mp4" />
+  </video>
+  <div class="video-overlay"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
   <section class="auth-card">
     <h2>{{ mode === 'login' ? 'Login to UrbanNest' : 'Create your UrbanNest account' }}</h2>
     <p>Login is required before listing your property.</p>
@@ -26,8 +41,8 @@
 
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-      <button type="submit" class="submit">
-        {{ mode === 'login' ? 'Login' : 'Create Account' }}
+      <button type="submit" class="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Please wait...' : (mode === 'login' ? 'Login' : 'Create Account') }}
       </button>
     </form>
   </section>

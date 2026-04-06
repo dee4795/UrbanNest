@@ -17,6 +17,7 @@ export class LoginComponent {
   email = '';
   password = '';
   errorMessage = '';
+  isSubmitting = false;
 
   constructor(
     private authService: AuthService,
@@ -27,23 +28,27 @@ export class LoginComponent {
   submit(): void {
     this.errorMessage = '';
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
+    this.isSubmitting = true;
 
     if (this.mode === 'register') {
-      const result = this.authService.register(this.name, this.email, this.password);
+      this.authService.register(this.name, this.email, this.password).subscribe((result) => {
+        this.isSubmitting = false;
+        if (!result.ok) {
+          this.errorMessage = result.message ?? 'Unable to register.';
+          return;
+        }
+        this.router.navigateByUrl(returnUrl);
+      });
+      return;
+    }
+
+    this.authService.login(this.email, this.password).subscribe((result) => {
+      this.isSubmitting = false;
       if (!result.ok) {
-        this.errorMessage = result.message ?? 'Unable to register.';
+        this.errorMessage = result.message ?? 'Unable to login.';
         return;
       }
       this.router.navigateByUrl(returnUrl);
-      return;
-    }
-
-    const result = this.authService.login(this.email, this.password);
-    if (!result.ok) {
-      this.errorMessage = result.message ?? 'Unable to login.';
-      return;
-    }
-
-    this.router.navigateByUrl(returnUrl);
+    });
   }
 }

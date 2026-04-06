@@ -10,3 +10,38 @@ body {
   color: #0f172a;
   min-height: 100vh;
 }
+
+body.dark-mode {
+  background: #020617;
+  color: #e2e8f0;
+}
+
+body.dark-mode .search-box,
+body.dark-mode .results,
+body.dark-mode .form-wrap,
+body.dark-mode .about-card,
+body.dark-mode .auth-card,
+body.dark-mode .details-card,
+body.dark-mode .hero {
+  background: rgba(15, 23, 42, 0.9) !important;
+  color: #e2e8f0;
+  border-color: #334155 !important;
+}
+
+body.dark-mode .meta,
+body.dark-mode .contact,
+body.dark-mode .page-note,
+body.dark-mode .hero p,
+body.dark-mode small,
+body.dark-mode label,
+body.dark-mode .about-card p {
+  color: #cbd5e1 !important;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: #0b1220;
+  color: #e2e8f0;
+  border-color: #334155;
+}

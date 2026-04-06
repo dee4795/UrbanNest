@@ -52,6 +52,93 @@ nav {
   flex-wrap: wrap;
 }
 
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-search {
+  display: none;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  padding: 0.4rem;
+  cursor: pointer;
+  gap: 0.35rem;
+  color: #334155;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2.5px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: all 250ms ease;
+}
+
+.hamburger.active .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translateY(10px);
+}
+
+.hamburger.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translateY(-10px);
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 19;
+  max-height: calc(100vh - 84px);
+  overflow-y: auto;
+  animation: slideDown 250ms ease both;
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-menu a,
+.mobile-menu button {
+  width: 100%;
+  text-align: left;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 a,
 button {
   color: #334155;
@@ -82,17 +169,178 @@ button:hover {
 }
 
 .page {
-  max-width: 1180px;
-  margin: 1.2rem auto;
-  padding: 0 1rem 1.2rem;
-  animation: fadeIn 420ms ease both;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: calc(100vh - 84px);
 }
 
-@keyframes fadeIn {
+.route-shell {
+  opacity: 1;
+}
+
+.route-shell.route-animate {
+  animation: routeFade 320ms ease both;
+}
+
+.intro-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.intro-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.intro-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(2, 6, 23, 0.65), rgba(2, 6, 23, 0.78));
+}
+
+.intro-content {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  animation: introZoom 500ms ease both;
+}
+
+.intro-content h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: 0.06em;
+}
+
+.intro-content p {
+  margin: 0.45rem 0 0;
+  color: #dbeafe;
+}
+
+.site-footer {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1.4rem 1rem;
+}
+
+.footer-content {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.footer-content h4 {
+  margin: 0 0 0.5rem;
+}
+
+.footer-content p {
+  margin: 0.2rem 0;
+  color: #cbd5e1;
+}
+
+.footer-content a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+@keyframes routeFade {
   from {
     opacity: 0;
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
+}
+
+@keyframes introZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0.8rem 1rem;
+    flex-wrap: nowrap;
+  }
+
+  .brand h1 {
+    font-size: 0.95rem;
+  }
+
+  .brand p {
+    font-size: 0.7rem;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-search {
+    display: block;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-wrapper {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+}
+
+:host-context(body.dark-mode) .topbar {
+  background: #0f172a;
+  border-bottom-color: #1e293b;
+  color: #f1f5f9;
+}
+
+:host-context(body.dark-mode) .site-footer {
+  background: #020617;
+  border-top: 1px solid #1e293b;
+}
+
+:host-context(body.dark-mode) .brand p {
+  color: #94a3b8;
+}
+
+:host-context(body.dark-mode) a,
+:host-context(body.dark-mode) button {
+  background: #111827;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+:host-context(body.dark-mode) a.active {
+  background: #00a76f;
+  border-color: #00a76f;
+  color: #ffffff;
+}
+
+:host-context(body.dark-mode) .hamburger {
+  color: #e2e8f0;
+}
+
+:host-context(body.dark-mode) .mobile-menu {
+  background: #0f172a;
+  border-bottom-color: #1e293b;
 }

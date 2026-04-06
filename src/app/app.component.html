@@ -7,15 +7,64 @@
     </div>
   </div>
 
-  <nav>
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Search</a>
+  <div class="nav-wrapper">
+    <nav class="desktop-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Search</a>
+      <a routerLink="/list-property" routerLinkActive="active">List Property</a>
+      <a routerLink="/about" routerLinkActive="active">About Us</a>
+      <a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a>
+      <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
+<button *ngIf="isLoggedIn" type="button" (click)="logout()">Logout</button>
+    </nav>
+
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="mobile-search">Search</a>
+
+    <button class="hamburger" (click)="toggleMenu()" [class.active]="isMenuOpen" aria-label="Toggle menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+
+  <nav class="mobile-menu" [class.open]="isMenuOpen" (click)="closeMenu()">
     <a routerLink="/list-property" routerLinkActive="active">List Property</a>
     <a routerLink="/about" routerLinkActive="active">About Us</a>
+    <a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a>
     <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
     <button *ngIf="isLoggedIn" type="button" (click)="logout()">Logout</button>
   </nav>
 </header>
 
 <main class="page">
-  <router-outlet />
+  <div class="route-shell" [class.route-animate]="routeAnimating">
+    <router-outlet />
+  </div>
 </main>
+
+<footer class="site-footer">
+  <section class="footer-content">
+    <div>
+      <h4>About UrbanNest</h4>
+      <p>
+        UrbanNest helps buyers and tenants discover verified homes with transparent pricing and zero brokerage.
+      </p>
+    </div>
+    <div>
+      <h4>Office Address</h4>
+      <p>UrbanNest Technologies Pvt. Ltd.</p>
+      <p>Baner, Pune, Maharashtra, India</p>
+    </div>
+
+  </section>
+</footer>
+
+<section class="intro-loader" *ngIf="showIntroLoader">
+  <video class="intro-video" autoplay muted playsinline preload="auto">
+    <source src="https://cdn.coverr.co/videos/coverr-aerial-view-of-city-buildings-1579/1080p.mp4" type="video/mp4" />
+  </video>
+  <div class="intro-overlay"></div>
+  <div class="intro-content">
+    <h2>UrbanNest</h2>
+    <p>Discover premium homes across India</p>
+  </div>
+</section>
