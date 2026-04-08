@@ -1,15 +1,41 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:18
     container_name: urbannest-postgres
     environment:
       POSTGRES_DB: urbannest
-      POSTGRES_USER: urbannest
-      POSTGRES_PASSWORD: urbannest
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - urbannest_pgdata:/var/lib/postgresql/data
+      - urbannest_pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d urbannest"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: urbannest-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/urbannest?schema=public"
+      JWT_SECRET: "your-secret-key-change-in-production"
+      PORT: 3000
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    working_dir: /app
+    command: sh -c "npm run prisma:deploy && npm run dev"
 
 volumes:
   urbannest_pgdata:

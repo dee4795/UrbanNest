@@ -13,8 +13,13 @@
       <a routerLink="/list-property" routerLinkActive="active">List Property</a>
       <a routerLink="/about" routerLinkActive="active">About Us</a>
       <a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a>
-      <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
-<button *ngIf="isLoggedIn" type="button" (click)="logout()">Logout</button>
+      <div class="nav-user-section">
+        <div *ngIf="isLoggedIn" class="user-info">
+          <span class="user-name">{{ currentUserName }}</span>
+        </div>
+        <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
+        <button *ngIf="isLoggedIn" type="button" class="logout-btn" (click)="logout()">Logout</button>
+      </div>
     </nav>
 
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="mobile-search">Search</a>
@@ -30,8 +35,11 @@
     <a routerLink="/list-property" routerLinkActive="active">List Property</a>
     <a routerLink="/about" routerLinkActive="active">About Us</a>
     <a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a>
+    <div *ngIf="isLoggedIn" class="mobile-user-info">
+      <p class="mobile-user-name">{{ currentUserName }}</p>
+    </div>
     <a *ngIf="!isLoggedIn" routerLink="/login" routerLinkActive="active">Login</a>
-    <button *ngIf="isLoggedIn" type="button" (click)="logout()">Logout</button>
+    <button *ngIf="isLoggedIn" type="button" class="logout-btn" (click)="logout()">Logout</button>
   </nav>
 </header>
 

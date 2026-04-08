@@ -30,6 +30,10 @@ export class AppComponent {
     return this.authService.isLoggedIn;
   }
 
+  get currentUserName(): string | null {
+    return this.authService.currentUserName;
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigateByUrl('/');

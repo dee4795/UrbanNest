@@ -1,5 +1,59 @@
 <div class="page-bg list-bg">
   <section class="form-wrap">
+    <!-- My Listings Section -->
+    <div class="my-listings-section" *ngIf="!loadingListings && myListings.length > 0">
+      <div class="section-header">
+        <h2>My Properties ({{ myListings.length }})</h2>
+        <p class="subtitle">Manage your listed properties - sold out? Delete them here</p>
+      </div>
+      
+      <div class="listings-grid">
+        <div *ngFor="let listing of myListings" class="listing-card">
+          <div class="listing-header">
+            <h3>{{ listing.title }}</h3>
+            <button 
+              type="button" 
+              class="delete-btn"
+              (click)="deleteProperty(listing.id, listing.title)"
+              title="Delete this property">
+              🗑️ Delete
+            </button>
+          </div>
+          
+          <div class="listing-details">
+            <p><strong>Purpose:</strong> {{ listing.purpose | titlecase }}</p>
+            <p><strong>Type:</strong> {{ listing.propertyType | titlecase }}</p>
+            <p><strong>Area:</strong> {{ listing.area }}</p>
+            <p><strong>BHK:</strong> {{ listing.bhk }}</p>
+            <p><strong>Price:</strong> ₹{{ listing.price | number }}</p>
+            <p><strong>Address:</strong> {{ listing.address }}</p>
+            <p *ngIf="listing.imageDataUrls.length > 0"><strong>Images:</strong> {{ listing.imageDataUrls.length }} photo(s)</p>
+          </div>
+
+          <div class="listing-images" *ngIf="listing.imageDataUrls.length > 0">
+            <div *ngFor="let img of listing.imageDataUrls.slice(0, 3)" class="thumb">
+              <img 
+                *ngIf="img.startsWith('http')" 
+                [src]="img" 
+                alt="Property thumbnail"
+                class="thumbnail" />
+              <div 
+                *ngIf="!img.startsWith('http')" 
+                [style.backgroundImage]="'url(' + img + ')'"
+                class="thumbnail-base64">
+              </div>
+            </div>
+            <div *ngIf="listing.imageDataUrls.length > 3" class="thumb more">
+              +{{ listing.imageDataUrls.length - 3 }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr *ngIf="myListings.length > 0" class="section-divider">
+
+    <!-- Add New Listing Form -->
     <h2>List Your Home</h2>
     <p>Add property details so buyers or tenants can contact you.</p>
 
@@ -99,11 +153,80 @@
         <textarea [(ngModel)]="model.address" name="address" rows="3" required></textarea>
       </label>
 
-      <label class="full">
-        Property Photos
-        <input type="file" accept="image/*" multiple (change)="onImageChange($event)" />
-        <small>{{ imageDataUrls.length }} image(s) selected</small>
-      </label>
+      <div class="full image-section">
+        <label>Property Photos</label>
+        
+        <div class="image-mode-tabs">
+          <button 
+            type="button" 
+            class="tab-button" 
+            [class.active]="imageMode === 'upload'"
+            (click)="switchImageMode('upload')">
+            📤 Upload from Device
+          </button>
+          <button 
+            type="button" 
+            class="tab-button" 
+            [class.active]="imageMode === 'url'"
+            (click)="switchImageMode('url')">
+            🔗 Add Image URL
+          </button>
+        </div>
+
+        <!-- Upload Mode -->
+        <div *ngIf="imageMode === 'upload'" class="image-input-group">
+          <input 
+            type="file" 
+            accept="image/*" 
+            multiple 
+            (change)="onImageChange($event)" />
+          <small>Select multiple images from your device</small>
+        </div>
+
+        <!-- URL Mode -->
+        <div *ngIf="imageMode === 'url'" class="image-url-group">
+          <div class="url-input-wrapper">
+            <input 
+              type="text" 
+              [(ngModel)]="imageUrl" 
+              name="imageUrl"
+              placeholder="e.g., https://example.com/image.jpg"
+              class="url-input" />
+            <button 
+              type="button" 
+              class="add-button"
+              (click)="addImageUrl()">
+              Add URL
+            </button>
+          </div>
+          <small>Paste the complete URL of the image</small>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="image-preview-grid" *ngIf="imageDataUrls.length > 0">
+          <div *ngFor="let img of imageDataUrls; let i = index" class="image-card">
+            <img 
+              *ngIf="img.startsWith('http')" 
+              [src]="img" 
+              alt="Property preview"
+              class="preview-img" />
+            <div 
+              *ngIf="!img.startsWith('http')" 
+              [style.backgroundImage]="'url(' + img + ')'"
+              class="preview-img-base64">
+            </div>
+            <button 
+              type="button" 
+              class="remove-btn"
+              (click)="removeImage(i)"
+              title="Remove image">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <small class="image-count">{{ imageDataUrls.length }} image(s) selected</small>
+      </div>
 
       <p class="ok" *ngIf="statusMessage">{{ statusMessage }}</p>
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>

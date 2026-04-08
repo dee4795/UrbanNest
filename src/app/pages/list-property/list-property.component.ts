@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BHKType, ListingPurpose, PropertyType } from '../../models/property.model';
+import { BHKType, ListingPurpose, PropertyListing, PropertyType } from '../../models/property.model';
 import { AuthService } from '../../services/auth.service';
 import { PropertyService } from '../../services/property.service';
 
@@ -13,7 +13,7 @@ import { PropertyService } from '../../services/property.service';
   templateUrl: './list-property.component.html',
   styleUrl: './list-property.component.css'
 })
-export class ListPropertyComponent {
+export class ListPropertyComponent implements OnInit {
   model: {
     purpose: ListingPurpose;
     propertyType: PropertyType;
@@ -49,9 +49,15 @@ export class ListPropertyComponent {
   };
 
   imageDataUrls: string[] = [];
+  imageUrl: string = '';
+  imageMode: 'upload' | 'url' = 'upload';
   statusMessage = '';
   errorMessage = '';
   isSubmitting = false;
+
+  myListings: PropertyListing[] = [];
+  loadingListings = false;
+  deleteConfirmMessage = '';
 
   constructor(
     private authService: AuthService,
@@ -59,10 +65,48 @@ export class ListPropertyComponent {
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    this.loadMyListings();
+  }
+
+  switchImageMode(mode: 'upload' | 'url'): void {
+    this.imageMode = mode;
+    this.imageUrl = '';
+    this.imageDataUrls = [];
+  }
+
   async onImageChange(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const files = input.files ? Array.from(input.files) : [];
     this.imageDataUrls = await Promise.all(files.map((file) => this.toDataUrl(file)));
+  }
+
+  addImageUrl(): void {
+    const url = this.imageUrl.trim();
+    if (!url) {
+      this.errorMessage = 'Please enter an image URL';
+      return;
+    }
+    if (!this.isValidUrl(url)) {
+      this.errorMessage = 'Please enter a valid URL';
+      return;
+    }
+    this.imageDataUrls.push(url);
+    this.imageUrl = '';
+    this.errorMessage = '';
+  }
+
+  removeImage(index: number): void {
+    this.imageDataUrls.splice(index, 1);
+  }
+
+  private isValidUrl(string: string): boolean {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   submit(form: NgForm): void {
@@ -132,5 +176,34 @@ export class ListPropertyComponent {
       reader.onerror = () => reject(new Error('Failed to read image'));
       reader.readAsDataURL(file);
     });
+  }
+
+  loadMyListings(): void {
+    this.loadingListings = true;
+    this.propertyService.getAll().subscribe({
+      next: (listings) => {
+        const userEmail = this.authService.currentUserEmail?.toLowerCase();
+        this.myListings = listings.filter(l => l.ownerEmail.toLowerCase() === userEmail);
+        this.loadingListings = false;
+      },
+      error: () => {
+        this.loadingListings = false;
+      }
+    });
+  }
+
+  deleteProperty(id: string, title: string): void {
+    if (confirm(`Are you sure you want to delete the listing "${title}"?`)) {
+      this.propertyService.delete(id).subscribe({
+        next: () => {
+          this.statusMessage = 'Property deleted successfully.';
+          this.myListings = this.myListings.filter(l => l.id !== id);
+          setTimeout(() => this.statusMessage = '', 3000);
+        },
+        error: (err) => {
+          this.errorMessage = err?.error?.message ?? 'Unable to delete property.';
+        }
+      });
+    }
   }
 }

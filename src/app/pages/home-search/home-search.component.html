@@ -65,10 +65,10 @@
     <h3>Available Properties ({{ properties.length }})</h3>
     <p class="page-note" *ngIf="properties.length">Showing {{ pageSize }} per page</p>
     <div class="cards" *ngIf="properties.length; else emptyState">
-      <article class="card" *ngFor="let item of pagedProperties" (click)="openDetails(item)">
+      <article class="card" *ngFor="let item of pagedProperties; let i = index" (click)="openDetails(item)">
         <img
           class="cover"
-          [src]="item.imageDataUrls[0] || 'https://placehold.co/600x300?text=Property+Photo'"
+          [src]="getCardImage(item, i)"
           [alt]="item.title"
         />
         <div class="content">

@@ -34,4 +34,8 @@ export class PropertyService {
   add(listing: Omit<PropertyListing, 'id' | 'createdAt'>): Observable<PropertyListing> {
     return this.http.post<PropertyListing>('/api/listings', listing);
   }
+
+  delete(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`/api/listings/${id}`);
+  }
 }

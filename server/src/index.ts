@@ -37,7 +37,19 @@ const listingSchema = z.object({
   address: z.string().trim().min(6),
   contactName: z.string().trim().min(2),
   contactPhone: z.string().trim().min(8),
-  imageDataUrls: z.array(z.string()).default([]),
+  imageDataUrls: z.array(
+    z.string().refine(
+      (url) => {
+        // Accept valid URLs (http/https) or base64 data URLs
+        try {
+          return url.startsWith('data:image/') || new URL(url).protocol.startsWith('http');
+        } catch {
+          return false;
+        }
+      },
+      'Each image must be a valid URL or base64 data URL'
+    )
+  ).default([]),
   parking: z.string().trim().optional(),
   carpetAreaSqft: z.number().int().positive().optional(),
   builtUpAreaSqft: z.number().int().positive().optional(),
@@ -52,6 +64,10 @@ function signToken(payload: JwtClaims): string {
   }
   return jwt.sign(payload, jwtSecret, { expiresIn: '7d' });
 }
+
+app.get('/', (_req, res) => {
+  res.json({ message: 'UrbanNest API', version: '1.0.0' });
+});
 
 app.get('/api/health', async (_req, res) => {
   try {
@@ -85,7 +101,7 @@ app.post('/api/auth/register', async (req, res) => {
   });
 
   const token = signToken({ userId: user.id, email: user.email });
-  res.status(201).json({ token, email: user.email });
+  res.status(201).json({ token, email: user.email, name: user.name });
 });
 
 app.post('/api/auth/login', async (req, res) => {
@@ -109,7 +125,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 
   const token = signToken({ userId: user.id, email: user.email });
-  res.json({ token, email: user.email });
+  res.json({ token, email: user.email, name: user.name });
 });
 
 app.get('/api/listings', async (_req, res) => {
@@ -173,11 +189,55 @@ app.post('/api/listings', requireAuth, async (req: AuthenticatedRequest, res) =>
   });
 
   res.status(201).json({
-    ...created,
-    createdAt: created.createdAt.toISOString(),
+    id: created.id.toString(),
+    ownerId: created.ownerId.toString(),
+    ownerEmail: created.ownerEmail,
+    purpose: created.purpose,
+    propertyType: created.propertyType,
+    title: created.title,
+    area: created.area,
+    bhk: Number(created.bhk),
+    price: Number(created.price),
+    address: created.address,
+    contactName: created.contactName,
+    contactPhone: created.contactPhone,
     imageDataUrls: Array.isArray(created.imageDataUrls) ? created.imageDataUrls : [],
-    amenities: Array.isArray(created.amenities) ? created.amenities : []
+    parking: created.parking !== null ? Number(created.parking) : null,
+    carpetAreaSqft: created.carpetAreaSqft !== null ? Number(created.carpetAreaSqft) : null,
+    builtUpAreaSqft: created.builtUpAreaSqft !== null ? Number(created.builtUpAreaSqft) : null,
+    amenities: Array.isArray(created.amenities) ? created.amenities : [],
+    propertyAge: created.propertyAge !== null ? Number(created.propertyAge) : null,
+    builderName: created.builderName,
+    createdAt: created.createdAt.toISOString()
   });
+});
+
+app.delete('/api/listings/:id', requireAuth, async (req: AuthenticatedRequest, res) => {
+  const { id } = req.params;
+  
+  if (!req.user) {
+    res.status(401).json({ message: 'Not authenticated.' });
+    return;
+  }
+
+  const listing = await prisma.listing.findUnique({
+    where: { id },
+    include: { owner: true }
+  });
+
+  if (!listing) {
+    res.status(404).json({ message: 'Listing not found.' });
+    return;
+  }
+
+  // Only owner can delete
+  if (listing.ownerId !== req.user.userId) {
+    res.status(403).json({ message: 'You can only delete your own listings.' });
+    return;
+  }
+
+  await prisma.listing.delete({ where: { id } });
+  res.json({ message: 'Listing deleted successfully.' });
 });
 
 app.listen(port, () => {
