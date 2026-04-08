@@ -128,10 +128,43 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ token, email: user.email, name: user.name });
 });
 
-app.get('/api/listings', async (_req, res) => {
-  const listings = await prisma.listing.findMany({
-    orderBy: { createdAt: 'desc' }
-  });
+app.get('/api/listings', async (req, res) => {
+  // If no page specified, return all listings (for backward compatibility)
+  const page = req.query.page ? Number(req.query.page) : undefined;
+  const limit = 10; // 10 items per page
+
+  if (!page) {
+    // Return all listings without pagination
+    const listings = await prisma.listing.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+
+    const normalized = listings.map((item) => ({
+      ...item,
+      bhk: Number(item.bhk),
+      price: Number(item.price),
+      carpetAreaSqft: item.carpetAreaSqft !== null ? Number(item.carpetAreaSqft) : null,
+      builtUpAreaSqft: item.builtUpAreaSqft !== null ? Number(item.builtUpAreaSqft) : null,
+      propertyAge: item.propertyAge !== null ? Number(item.propertyAge) : null,
+      createdAt: item.createdAt.toISOString(),
+      imageDataUrls: Array.isArray(item.imageDataUrls) ? item.imageDataUrls : [],
+      amenities: Array.isArray(item.amenities) ? item.amenities : []
+    }));
+
+    return res.json(normalized);
+  }
+
+  // Paginated response when page is specified
+  const skip = (page - 1) * limit;
+
+  const [listings, total] = await Promise.all([
+    prisma.listing.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.listing.count()
+  ]);
 
   const normalized = listings.map((item) => ({
     ...item,
@@ -144,7 +177,17 @@ app.get('/api/listings', async (_req, res) => {
     imageDataUrls: Array.isArray(item.imageDataUrls) ? item.imageDataUrls : [],
     amenities: Array.isArray(item.amenities) ? item.amenities : []
   }));
-  res.json(normalized);
+
+  const totalPages = Math.ceil(total / limit);
+  res.json({
+    data: normalized,
+    pagination: {
+      currentPage: page,
+      itemsPerPage: limit,
+      total,
+      totalPages
+    }
+  });
 });
 
 app.post('/api/listings', requireAuth, async (req: AuthenticatedRequest, res) => {

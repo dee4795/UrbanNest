@@ -57,13 +57,16 @@ export class HomeSearchComponent {
   }
 
   applyFilters(): void {
+    console.log('🔍 Applying filters:', this.filters);
     this.isLoading = true;
     this.propertyService.search(this.filters).subscribe({
       next: (items) => {
+        console.log('✅ Search results:', items.length, 'items found');
         this.properties = items;
         this.currentPage = 1;
       },
-      error: () => {
+      error: (err) => {
+        console.error('❌ Search error:', err);
         this.properties = [];
         this.isLoading = false;
       },
